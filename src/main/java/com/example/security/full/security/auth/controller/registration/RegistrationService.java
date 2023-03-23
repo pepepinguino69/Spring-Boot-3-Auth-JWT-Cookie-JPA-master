@@ -2,6 +2,7 @@ package com.example.security.full.security.auth.controller.registration;
 
 import com.example.security.full.security.UserSecurity.dao.JpaUserDetailsService;
 
+import com.example.security.full.security.app.repository.CiudadRepository;
 import com.example.security.full.security.auth.email.EmailDetails;
 import com.example.security.full.security.auth.email.EmailService;
 import com.example.security.full.security.auth.request.AuthenticationRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -37,6 +39,10 @@ public class RegistrationService {
     private final EmailService emailService;
 
     private final UsersRepository usersRepository;
+
+    private final CiudadRepository ciudadRepository;
+
+
 
     private final AuthenticationManager authenticationManager;
 
@@ -60,7 +66,7 @@ public class RegistrationService {
         newUser.setEmail(request.getEmail());
         newUser.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
         newUser.setRoles(request.getRoles());
-
+        newUser.setCiudad(ciudadRepository.findById(request.getCiudad_id()).get());
         String token = usersService.signUpUser(newUser);
 
 
@@ -78,9 +84,14 @@ public class RegistrationService {
 
     @Transactional
     public String confirmToken(String token) {
-        Boolean validToken=usersRepository.findByConfirmationToken(token).isPresent();
-
-        if(!validToken){
+        Boolean validToken1=usersRepository.findByConfirmationToken(token).isPresent();
+        Boolean validToken = validToken1;
+        if (validToken1){
+            Boolean validToken2=usersRepository.findByConfirmationToken(token).get().getCreatedOn().plusDays(1).isAfter(LocalDate.now());
+            Boolean validToken3=usersRepository.findByConfirmationToken(token).get().getEnabled();
+            validToken = validToken1&&validToken2&&!validToken3;
+        }
+            if(!validToken){
             return "Token incorrecto";
         }
         Users userTBC=usersRepository.findByConfirmationToken(token).get();

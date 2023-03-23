@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-import static jakarta.persistence.GenerationType.SEQUENCE;
+import static jakarta.persistence.GenerationType.*;
 import static java.lang.Boolean.FALSE;
 
 
@@ -16,18 +16,14 @@ import static java.lang.Boolean.FALSE;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "Users")
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "student_email_unique", columnNames = "email"))
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo",
+        discriminatorType = DiscriminatorType.INTEGER)
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "email_unique", columnNames = "email"))
 public class Users {
     @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "user_sequence"
-    )
+            strategy = AUTO)
     @Column(name = "id", updatable = false)
     private Long id;
     @Column(name = "first_name", nullable = false)

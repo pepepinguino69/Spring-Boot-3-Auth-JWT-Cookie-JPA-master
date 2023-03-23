@@ -13,4 +13,5 @@ public class UsersRequest {
     private String email;
     private String password;
     private String roles;
+    private Long ciudad_id;
 }

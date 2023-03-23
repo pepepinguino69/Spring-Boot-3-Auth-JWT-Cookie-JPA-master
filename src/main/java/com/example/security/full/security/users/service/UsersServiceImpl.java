@@ -1,6 +1,7 @@
 package com.example.security.full.security.users.service;
 
 
+import com.example.security.full.security.app.repository.CiudadRepository;
 import com.example.security.full.security.auth.controller.registration.token.ConfirmationToken;
 import com.example.security.full.security.users.Requests.UsersRequest;
 import com.example.security.full.security.users.model.Users;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class UsersServiceImpl implements UsersService {
     private final UsersRepository usersRepository;
 
+    private final CiudadRepository ciudadRepository;
+
     public List<Users> GetAllUsers() {
         return usersRepository.findAll();
     }
@@ -29,6 +32,7 @@ public class UsersServiceImpl implements UsersService {
         newUser.setEmail(user.getEmail());
         newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         newUser.setRoles(user.getRoles());
+        newUser.setCiudad(ciudadRepository.findById(user.getCiudad_id()).get());
         return usersRepository.save(newUser);
     }
 
