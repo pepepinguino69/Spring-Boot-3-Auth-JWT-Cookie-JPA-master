@@ -23,10 +23,6 @@ public class UsersController {
         return usersService.GetAllUsers();
     }
 
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    @PostMapping("")
-    public Users GetUsers(@RequestBody UsersRequest user) {
-        return usersService.AddUser(user);
-    }
+   
 
 }

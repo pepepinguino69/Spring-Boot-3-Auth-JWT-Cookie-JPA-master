@@ -25,16 +25,6 @@ public class UsersServiceImpl implements UsersService {
         return usersRepository.findAll();
     }
 
-    public Users AddUser(UsersRequest user) {
-        Users newUser = new Users();
-        newUser.setFirst_name(user.getFirst_name());
-        newUser.setLast_name(user.getLast_name());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        newUser.setRoles(user.getRoles());
-        newUser.setCiudad(ciudadRepository.findById(user.getCiudad_id()).get());
-        return usersRepository.save(newUser);
-    }
 
     public String signUpUser(Users users) {
         boolean userExists = usersRepository

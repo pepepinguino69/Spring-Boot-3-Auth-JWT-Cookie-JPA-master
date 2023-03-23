@@ -6,7 +6,7 @@ import com.example.security.full.security.UserSecurity.model.UserSecurity;
 import com.example.security.full.security.auth.controller.registration.RegistrationRequest;
 import com.example.security.full.security.auth.controller.registration.RegistrationService;
 import com.example.security.full.security.auth.request.AuthenticationRequest;
-import com.example.security.full.security.auth.service.AuthService;
+
 import com.example.security.full.security.config.JwtUtils;
 
 import com.example.security.full.security.users.Requests.UsersRequest;
@@ -32,7 +32,7 @@ public class AuthController {
 
     private final RegistrationService registrationService;
 
-    private final AuthService authService;
+
 
     private final JwtUtils jwtUtils;
 
